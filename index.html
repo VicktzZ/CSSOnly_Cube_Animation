@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{
+            background-color: #000;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            box-sizing: border-box;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 75px;
+            perspective: 10em;
+            perspective-origin: 50% calc(50% - 2em);
+        }
+        
+        .wrapper{
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            background: linear-gradient(90deg, #0009 45%, #0000 55%);
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: left;
+            flex-direction: column;
+            transition: 3s;
+            cursor: pointer;
+        }
+
+        .wrapper h1, h2{
+            font-family: 'Courier New', Courier, monospace;
+            color: #fff;
+        }
+        
+        .wrapper h1{
+            font-size: 1em;
+            width: 50%;
+            margin-left: 1em;
+        }
+
+        .wrapper h2{
+            font-size: 0.5em;
+            width: 50%;
+            margin-left: 2em;
+        }
+
+        .wrapper p{
+            font-size: 0.2em;
+            width: 50%;
+            margin-left: 5em;
+            color: #fff;
+        }
+
+        #box:checked + label{
+            filter: blur(250px);
+            visibility: hidden;
+            transition: 3s;
+        }
+
+        .scene{
+            position: relative;
+            transform-style: preserve-3d;
+            animation: sceneRotate 30s linear infinite;
+            cursor: pointer;
+        }
+        
+        @keyframes sceneRotate {
+            to { transform: rotateY(360deg); }
+        }
+
+        .ball{
+            width: 1em;
+            height: 1em;  
+            border-radius: 50%;
+            background-color: rgb(164, 130, 179);
+            position: absolute;
+            left: -.5em;
+            bottom: 1em;
+            background-image: radial-gradient(
+                circle at top,
+                rgb(164, 130, 179), 70%, #000
+            );
+            animation:
+            ballBounce 2s infinite cubic-bezier(0, 0, 0.21, 1.15), 
+            sceneRotate 30s linear infinite reverse;
+        }
+
+        @keyframes ballBounce {
+            0%, 100% { bottom: 0.5em; }
+            50% { bottom: 3em; animation-timing-function: ease-in; }
+        }
+
+        .ballShadow{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(#0007, #0000 50%);
+            animation: ballShadow 2s infinite ease-out;
+        }
+
+        @keyframes ballShadow {
+            0%, 0%, 93.5%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(2); opacity: 0.5; animation-timing-function: ease-in; }
+        }
+
+        .cube{
+            width: 2em;
+            height: 2em;
+            position: absolute;
+            bottom: -1em;
+            left: -1em;
+            margin: 0 auto;
+            -webkit-transform-style: preserve-3d;
+            -moz-transform-style: preserve-3d;
+            -ms-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+            animation: cubeHeight 2s infinite cubic-bezier(0.42, 0, 1, 2.04);
+        }
+
+        @keyframes cubeHeight {
+            0%, 100% { height: 1.5em; }
+            8%, 93.5% { height: 2em; }
+        }
+
+        .left, .right, .front, .back{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(95, 56, 112, .6);
+            box-shadow: 0 0 0.5em #000 inset;
+        }
+
+        .front { transform: translateZ(1em); }
+        .right { transform: rotateY(90deg) translateZ(1em); }
+        .back { transform: rotateY(180deg) translateZ(1em); }
+        .left { transform: rotateY(270deg) translateZ(1em); }
+
+        .top{
+            position: absolute;
+            width: 2em;
+            height: 2em;
+            background: rgba(95, 56, 112, .6);
+            transform: translateY(-50%) rotateX(90deg);
+            box-shadow: 0 0 0.5em #000a inset;
+        }
+
+
+        .bottom{
+            position: absolute;
+            width: 2em;
+            height: 2em;
+            background: #0007;
+            bottom: 0;
+            transform: translateY(50%) rotateX(90deg);
+            box-shadow: 0 0 0.5em #000;
+        }
+
+        .floor{
+            position: absolute;
+            top: 1em;
+            transform:
+                translate(-50%, -50%)
+                rotateX(90deg);
+            height: 15em;
+            width: 15em;
+            background-image:
+            radial-gradient(#0000, #000 75%),
+            repeating-conic-gradient(
+                from 45deg, 
+                #111 0deg 90deg, 
+                #222 90deg 180deg);
+            background-size:100%, 1em 1em;
+            }
+        
+    </style>
+    <title>CSS Animation</title>
+</head>
+<body>
+    <input type="checkbox" id="box">
+    <label for="box" class="wrapper">
+        <h1>CSS Only Cube Animation</h1>
+        <h2>Made by Vitor Hugo Rodrigues dos Santos</h2>
+        <p>(Click on the screen for a better view!)</p>
+    </label>
+    <label for="box" class="scene">
+        <div class="floor"></div>
+        <div class="cube">
+            <div class="bottom"></div>
+            <div class="front"></div>
+            <div class="back"></div>
+            <div class="left"></div>
+            <div class="right"></div>
+            <div class="top">
+                <div class="ballShadow"></div>
+            </div>
+        </div>
+        <div class="ball"></div>
+    </label>
+</body>
+</html>
